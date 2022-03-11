@@ -6,13 +6,15 @@
 package lab8p2_juanmolina_11621058;
 
 import java.awt.Color;
+import java.io.Serializable;
+import java.util.Random;
 
 /**
  *
  * @author Hwan
  */
-public class carro {
-    private int id,distancia,velocidad;
+public class carro implements Serializable{
+    private int id,distancia;
     private String nombre, tipo;
     private Color color;
 
@@ -41,14 +43,6 @@ public class carro {
         this.distancia = distancia;
     }
 
-    public int getVelocidad() {
-        return velocidad;
-    }
-
-    public void setVelocidad(int velocidad) {
-        this.velocidad = velocidad;
-    }
-
     public String getNombre() {
         return nombre;
     }
@@ -63,6 +57,11 @@ public class carro {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    @Override
+    public String toString() {
+        return "carro{" + "id=" + id + ", distancia=" + distancia + ", nombre=" + nombre + ", tipo=" + tipo + ", color=" + color + '}';
     }
     
     

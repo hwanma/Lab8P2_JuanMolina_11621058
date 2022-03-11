@@ -6,7 +6,14 @@
 package lab8p2_juanmolina_11621058;
 
 import java.awt.Color;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JColorChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -48,8 +55,8 @@ public class main extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         color = new javax.swing.JToggleButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        idField = new javax.swing.JTextField();
+        corredorField = new javax.swing.JTextField();
         guardar = new javax.swing.JButton();
         jProgressBar1 = new javax.swing.JProgressBar();
         comenzar = new javax.swing.JButton();
@@ -125,6 +132,11 @@ public class main extends javax.swing.JFrame {
         });
 
         guardar.setText("GUARDAR");
+        guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarActionPerformed(evt);
+            }
+        });
 
         comenzar.setText("COMENZAR");
 
@@ -161,8 +173,8 @@ public class main extends javax.swing.JFrame {
                         .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(guardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2)
+                            .addComponent(idField)
+                            .addComponent(corredorField)
                             .addComponent(color, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(28, 28, 28)
@@ -224,7 +236,7 @@ public class main extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(corredorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(25, 25, 25)
                         .addComponent(listaTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -236,7 +248,7 @@ public class main extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(largoPistaLabel)
                             .addComponent(largoPistaField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(59, 59, 59)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(botonPista)
@@ -287,6 +299,27 @@ public class main extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_pausarActionPerformed
 
+    private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
+        int tempId = Integer.parseInt(idField.getText());
+        idField.setText("");
+        
+        String tempCorredor = corredorField.getText();
+        corredorField.setText("");
+        
+        Color tempColor = color.getBackground();
+        
+        String tempTipo = listaTipo.getActionCommand();
+        
+        carro temp = new carro(tempId, tempCorredor, tempTipo, tempColor);
+        
+        archivo ap = new archivo("./carros.cbm");
+        ap.cargarArchivo();
+        ap.setCarro(temp);
+        ap.escribirArchivo();
+        JOptionPane.showMessageDialog(this,
+                "Corredor Guardado Exitosamente");
+    }//GEN-LAST:event_guardarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -327,7 +360,9 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JButton botonPista;
     private javax.swing.JToggleButton color;
     private javax.swing.JButton comenzar;
+    private javax.swing.JTextField corredorField;
     private javax.swing.JButton guardar;
+    private javax.swing.JTextField idField;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JColorChooser jColorChooser2;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -336,8 +371,6 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel largoLabel;
     private javax.swing.JLabel largoLabelEdit;
     private javax.swing.JTextField largoPistaField;

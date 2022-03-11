@@ -29,12 +29,12 @@ public class archivo {
         archivo = new File(path);
     }
 
-    public ArrayList<carro> getListaPersonas() {
+    public ArrayList<carro> getCarros() {
         return carros;
     }
 
-    public void setListaPersonas(ArrayList<carro> listaAlumnos) {
-        this.carros = listaAlumnos;
+    public void setCarros(ArrayList<carro> carros) {
+        this.carros = carros;
     }
 
     public File getArchivo() {
@@ -45,7 +45,7 @@ public class archivo {
         this.archivo = archivo;
     }
     
-    public void setAlumno(carro a){
+    public void setCarro(carro a){
         carros.add(a);
     }
     
