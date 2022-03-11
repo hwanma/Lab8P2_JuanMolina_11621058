@@ -10,10 +10,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,11 +24,19 @@ import javax.swing.JOptionPane;
  */
 public class main extends javax.swing.JFrame {
 
-    /**
-     * Creates new form main
-     */
+    archivo ap = new archivo("./carros.cbm");
+    ArrayList<carro> carrosTemp = new ArrayList();
+    
     public main() {
         initComponents();
+        ap.cargarArchivo();
+        carrosTemp = ap.getCarros();
+        
+        for (carro temp : carrosTemp) {
+            carrosLista.addItem(temp.getNombre());
+        }
+        
+        
     }
 
     /**
@@ -51,7 +62,7 @@ public class main extends javax.swing.JFrame {
         reinicioBoton = new javax.swing.JButton();
         listaTipo = new javax.swing.JComboBox<>();
         agregar = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        carrosLista = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         color = new javax.swing.JToggleButton();
@@ -62,7 +73,7 @@ public class main extends javax.swing.JFrame {
         comenzar = new javax.swing.JButton();
         pausar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaCorredores = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,8 +128,18 @@ public class main extends javax.swing.JFrame {
         });
 
         agregar.setText("AGREGAR");
+        agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarActionPerformed(evt);
+            }
+        });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "" }));
+        carrosLista.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "" }));
+        carrosLista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                carrosListaActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Numero Identificador");
 
@@ -147,7 +168,7 @@ public class main extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaCorredores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -155,7 +176,7 @@ public class main extends javax.swing.JFrame {
                 "Identificador", "Corredor", "Distancia"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaCorredores);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -166,7 +187,7 @@ public class main extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(carrosLista, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(listaTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
@@ -230,7 +251,7 @@ public class main extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(agregar)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(carrosLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(23, 23, 23)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -301,24 +322,40 @@ public class main extends javax.swing.JFrame {
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
         int tempId = Integer.parseInt(idField.getText());
-        idField.setText("");
-        
-        String tempCorredor = corredorField.getText();
-        corredorField.setText("");
-        
-        Color tempColor = color.getBackground();
-        
-        String tempTipo = listaTipo.getActionCommand();
-        
-        carro temp = new carro(tempId, tempCorredor, tempTipo, tempColor);
-        
-        archivo ap = new archivo("./carros.cbm");
-        ap.cargarArchivo();
-        ap.setCarro(temp);
-        ap.escribirArchivo();
-        JOptionPane.showMessageDialog(this,
-                "Corredor Guardado Exitosamente");
+        if(carrosTemp.contains(tempId)){
+            JOptionPane.showMessageDialog(this,"Este ID de corredor ya existe!");
+            idField.setText("");
+        } else {
+            idField.setText("");
+
+            String tempCorredor = corredorField.getText();
+            corredorField.setText("");
+
+            Color tempColor = color.getBackground();
+
+            String tempTipo = listaTipo.getActionCommand();
+
+            carro temp = new carro(tempId, tempCorredor, tempTipo, tempColor);
+
+            ap.cargarArchivo();
+            ap.setCarro(temp);
+            ap.escribirArchivo();
+            JOptionPane.showMessageDialog(this,
+                    "Corredor Guardado Exitosamente");
+        }
     }//GEN-LAST:event_guardarActionPerformed
+
+    private void carrosListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carrosListaActionPerformed
+        
+    }//GEN-LAST:event_carrosListaActionPerformed
+
+    private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
+        String nombreTemp = carrosTemp.get(carrosLista.getSelectedIndex()).getNombre();
+        int idTemp = carrosTemp.get(carrosLista.getSelectedIndex()).getId();
+        
+        DefaultTableModel model = (DefaultTableModel) tablaCorredores.getModel();
+        model.addRow(new Object[]{idTemp, nombreTemp, ""});
+    }//GEN-LAST:event_agregarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -358,6 +395,7 @@ public class main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregar;
     private javax.swing.JButton botonPista;
+    private javax.swing.JComboBox<String> carrosLista;
     private javax.swing.JToggleButton color;
     private javax.swing.JButton comenzar;
     private javax.swing.JTextField corredorField;
@@ -365,12 +403,10 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JTextField idField;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JColorChooser jColorChooser2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel largoLabel;
     private javax.swing.JLabel largoLabelEdit;
     private javax.swing.JTextField largoPistaField;
@@ -382,5 +418,6 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JLabel pistaLabel;
     private javax.swing.JLabel pistaLabelEdit;
     private javax.swing.JButton reinicioBoton;
+    private javax.swing.JTable tablaCorredores;
     // End of variables declaration//GEN-END:variables
 }
