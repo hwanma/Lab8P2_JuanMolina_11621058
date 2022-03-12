@@ -31,7 +31,6 @@ public class main extends javax.swing.JFrame {
         initComponents();
         ap.cargarArchivo();
         carrosTemp = ap.getCarros();
-        
         for (carro temp : carrosTemp) {
             carrosLista.addItem(temp.getNombre());
         }
@@ -69,7 +68,7 @@ public class main extends javax.swing.JFrame {
         idField = new javax.swing.JTextField();
         corredorField = new javax.swing.JTextField();
         guardar = new javax.swing.JButton();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        carreraBarra = new javax.swing.JProgressBar();
         comenzar = new javax.swing.JButton();
         pausar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -160,6 +159,11 @@ public class main extends javax.swing.JFrame {
         });
 
         comenzar.setText("COMENZAR");
+        comenzar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comenzarActionPerformed(evt);
+            }
+        });
 
         pausar.setText("PAUSAR");
         pausar.addActionListener(new java.awt.event.ActionListener() {
@@ -172,6 +176,7 @@ public class main extends javax.swing.JFrame {
             new Object [][] {
 
             },
+
             new String [] {
                 "Identificador", "Corredor", "Distancia"
             }
@@ -216,7 +221,7 @@ public class main extends javax.swing.JFrame {
                                     .addComponent(largoPistaField, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(carreraBarra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(comenzar)
                             .addGap(18, 18, 18)
@@ -243,7 +248,7 @@ public class main extends javax.swing.JFrame {
                     .addComponent(pistaLabelEdit)
                     .addComponent(largoLabelEdit))
                 .addGap(24, 24, 24)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(carreraBarra, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
@@ -289,6 +294,9 @@ public class main extends javax.swing.JFrame {
         nombrePistaField.setText("");
         largoLabelEdit.setText(largoPistaField.getText());
         largoPistaField.setText("");
+        
+        ab = new barra(carreraBarra,Integer.parseInt(largoLabelEdit.getText()));
+        
     }//GEN-LAST:event_botonPistaActionPerformed
 
     private void reinicioBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reinicioBotonActionPerformed
@@ -296,6 +304,8 @@ public class main extends javax.swing.JFrame {
         nombrePistaField.setText("");
         largoLabelEdit.setText("");
         largoPistaField.setText("");
+        
+        ab = new barra(carreraBarra,0);
     }//GEN-LAST:event_reinicioBotonActionPerformed
 
     private void listaTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listaTipoActionPerformed
@@ -322,27 +332,34 @@ public class main extends javax.swing.JFrame {
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
         int tempId = Integer.parseInt(idField.getText());
-        if(carrosTemp.contains(tempId)){
-            JOptionPane.showMessageDialog(this,"Este ID de corredor ya existe!");
-            idField.setText("");
-        } else {
-            idField.setText("");
+        
+        for (carro object : carrosTemp) {
+            if (object.getId()==tempId) {
+                JOptionPane.showMessageDialog(this, "Este ID de corredor ya existe!");
+                idField.setText("");
+                break;
+            } else if (object.getId()!=tempId){
+                idField.setText("");
 
-            String tempCorredor = corredorField.getText();
-            corredorField.setText("");
+                String tempCorredor = corredorField.getText();
+                corredorField.setText("");
 
-            Color tempColor = color.getBackground();
+                Color tempColor = color.getBackground();
 
-            String tempTipo = listaTipo.getActionCommand();
+                String tempTipo = listaTipo.getActionCommand();
 
-            carro temp = new carro(tempId, tempCorredor, tempTipo, tempColor);
+                carro temp = new carro(tempId, tempCorredor, tempTipo, tempColor);
+                carrosTemp.add(temp);
 
-            ap.cargarArchivo();
-            ap.setCarro(temp);
-            ap.escribirArchivo();
-            JOptionPane.showMessageDialog(this,
-                    "Corredor Guardado Exitosamente");
+                ap.cargarArchivo();
+                ap.setCarro(temp);
+                carrosLista.addItem(tempCorredor);
+                ap.escribirArchivo();
+                JOptionPane.showMessageDialog(this,
+                        "Corredor Guardado Exitosamente");
+            }
         }
+        
     }//GEN-LAST:event_guardarActionPerformed
 
     private void carrosListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carrosListaActionPerformed
@@ -350,12 +367,17 @@ public class main extends javax.swing.JFrame {
     }//GEN-LAST:event_carrosListaActionPerformed
 
     private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
-        String nombreTemp = carrosTemp.get(carrosLista.getSelectedIndex()).getNombre();
-        int idTemp = carrosTemp.get(carrosLista.getSelectedIndex()).getId();
+        String nombreTemp = carrosTemp.get(carrosLista.getSelectedIndex()-1).getNombre();
+        int idTemp = carrosTemp.get(carrosLista.getSelectedIndex()-1).getId();
         
         DefaultTableModel model = (DefaultTableModel) tablaCorredores.getModel();
-        model.addRow(new Object[]{idTemp, nombreTemp, ""});
+        model.addRow(new Object[]{idTemp, nombreTemp, 0});
+
     }//GEN-LAST:event_agregarActionPerformed
+
+    private void comenzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comenzarActionPerformed
+        ab.start();
+    }//GEN-LAST:event_comenzarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -395,6 +417,7 @@ public class main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregar;
     private javax.swing.JButton botonPista;
+    private javax.swing.JProgressBar carreraBarra;
     private javax.swing.JComboBox<String> carrosLista;
     private javax.swing.JToggleButton color;
     private javax.swing.JButton comenzar;
@@ -405,7 +428,6 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JColorChooser jColorChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel largoLabel;
     private javax.swing.JLabel largoLabelEdit;
@@ -420,4 +442,6 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JButton reinicioBoton;
     private javax.swing.JTable tablaCorredores;
     // End of variables declaration//GEN-END:variables
+barra ab;
+    
 }

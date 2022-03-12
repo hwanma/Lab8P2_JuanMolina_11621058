@@ -72,7 +72,7 @@
                   </Group>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                       <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jProgressBar1" max="32767" attributes="0"/>
+                      <Component id="carreraBarra" max="32767" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="comenzar" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -105,7 +105,7 @@
                   <Component id="largoLabelEdit" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-              <Component id="jProgressBar1" min="-2" pref="73" max="-2" attributes="0"/>
+              <Component id="carreraBarra" min="-2" pref="73" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="174" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
@@ -294,12 +294,15 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="guardarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JProgressBar" name="jProgressBar1">
+    <Component class="javax.swing.JProgressBar" name="carreraBarra">
     </Component>
     <Component class="javax.swing.JButton" name="comenzar">
       <Properties>
         <Property name="text" type="java.lang.String" value="COMENZAR"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comenzarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="pausar">
       <Properties>
@@ -319,7 +322,7 @@
         <Component class="javax.swing.JTable" name="tablaCorredores">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        &#xa;    },&#xa;    new String [] {&#xa;        &quot;Identificador&quot;, &quot;Corredor&quot;, &quot;Distancia&quot;&#xa;    }&#xa;)" type="code"/>
+              <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;&#xa;    },&#xa;&#xa;    new String [] {&#xa;        &quot;Identificador&quot;, &quot;Corredor&quot;, &quot;Distancia&quot;&#xa;    }&#xa;)" type="code"/>
             </Property>
           </Properties>
         </Component>
