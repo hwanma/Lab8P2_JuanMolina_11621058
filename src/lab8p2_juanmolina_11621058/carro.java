@@ -25,6 +25,7 @@ public class carro implements Serializable{
         this.id = id;
         this.nombre = nombre;
         this.color = color;
+        this.tipo = tipo;
     }
 
     public int getId() {
@@ -40,7 +41,7 @@ public class carro implements Serializable{
     }
 
     public void setDistancia(int distancia) {
-        this.distancia = distancia;
+        this.distancia += distancia;
     }
 
     public String getNombre() {
@@ -58,6 +59,16 @@ public class carro implements Serializable{
     public void setColor(Color color) {
         this.color = color;
     }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+    
+    
 
     @Override
     public String toString() {

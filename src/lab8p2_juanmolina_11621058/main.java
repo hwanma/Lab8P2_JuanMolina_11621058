@@ -11,8 +11,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractButton;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
@@ -26,7 +28,7 @@ public class main extends javax.swing.JFrame {
 
     archivo ap = new archivo("./carros.cbm");
     ArrayList<carro> carrosTemp = new ArrayList();
-    
+    ArrayList<carro> carrosCarrera = new ArrayList();
     public main() {
         initComponents();
         ap.cargarArchivo();
@@ -70,23 +72,31 @@ public class main extends javax.swing.JFrame {
         guardar = new javax.swing.JButton();
         carreraBarra = new javax.swing.JProgressBar();
         comenzar = new javax.swing.JButton();
-        pausar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaCorredores = new javax.swing.JTable();
+        estado = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pistaLabel.setText("Pista:");
+        getContentPane().add(pistaLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(287, 40, -1, -1));
 
         largoLabel.setText("Largo:");
+        getContentPane().add(largoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(401, 40, -1, -1));
 
         pistaLabelEdit.setText("__________");
+        getContentPane().add(pistaLabelEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(333, 40, -1, -1));
 
         largoLabelEdit.setText("__________");
+        getContentPane().add(largoLabelEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(452, 40, -1, -1));
 
         nombrePistaLabel.setText("Nombre Pista:");
+        getContentPane().add(nombrePistaLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(321, 370, -1, -1));
 
         largoPistaLabel.setText("Largo Pista:");
+        getContentPane().add(largoPistaLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(321, 412, -1, -1));
 
         nombrePistaField.setMaximumSize(new java.awt.Dimension(50, 16));
         nombrePistaField.setMinimumSize(new java.awt.Dimension(50, 16));
@@ -95,6 +105,7 @@ public class main extends javax.swing.JFrame {
                 nombrePistaFieldActionPerformed(evt);
             }
         });
+        getContentPane().add(nombrePistaField, new org.netbeans.lib.awtextra.AbsoluteConstraints(414, 367, 88, -1));
 
         largoPistaField.setMaximumSize(new java.awt.Dimension(50, 16));
         largoPistaField.setMinimumSize(new java.awt.Dimension(50, 16));
@@ -104,6 +115,7 @@ public class main extends javax.swing.JFrame {
                 largoPistaFieldActionPerformed(evt);
             }
         });
+        getContentPane().add(largoPistaField, new org.netbeans.lib.awtextra.AbsoluteConstraints(414, 409, 88, -1));
 
         botonPista.setText("USAR PISTA");
         botonPista.addActionListener(new java.awt.event.ActionListener() {
@@ -111,6 +123,7 @@ public class main extends javax.swing.JFrame {
                 botonPistaActionPerformed(evt);
             }
         });
+        getContentPane().add(botonPista, new org.netbeans.lib.awtextra.AbsoluteConstraints(324, 490, 117, -1));
 
         reinicioBoton.setText("REINICIAR PISTA");
         reinicioBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -118,6 +131,7 @@ public class main extends javax.swing.JFrame {
                 reinicioBotonActionPerformed(evt);
             }
         });
+        getContentPane().add(reinicioBoton, new org.netbeans.lib.awtextra.AbsoluteConstraints(324, 538, -1, -1));
 
         listaTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "McQueen", "Convertible", "Nascar"}));
         listaTipo.addActionListener(new java.awt.event.ActionListener() {
@@ -125,6 +139,7 @@ public class main extends javax.swing.JFrame {
                 listaTipoActionPerformed(evt);
             }
         });
+        getContentPane().add(listaTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 487, 117, -1));
 
         agregar.setText("AGREGAR");
         agregar.addActionListener(new java.awt.event.ActionListener() {
@@ -132,6 +147,7 @@ public class main extends javax.swing.JFrame {
                 agregarActionPerformed(evt);
             }
         });
+        getContentPane().add(agregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 367, 104, -1));
 
         carrosLista.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "" }));
         carrosLista.addActionListener(new java.awt.event.ActionListener() {
@@ -139,10 +155,13 @@ public class main extends javax.swing.JFrame {
                 carrosListaActionPerformed(evt);
             }
         });
+        getContentPane().add(carrosLista, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 367, 117, -1));
 
         jLabel1.setText("Numero Identificador");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 412, -1, -1));
 
         jLabel2.setText("Nombre Corredor");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 443, -1, -1));
 
         color.setText("COLOR");
         color.addActionListener(new java.awt.event.ActionListener() {
@@ -150,6 +169,9 @@ public class main extends javax.swing.JFrame {
                 colorActionPerformed(evt);
             }
         });
+        getContentPane().add(color, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 490, 107, -1));
+        getContentPane().add(idField, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 409, 107, -1));
+        getContentPane().add(corredorField, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 440, 107, -1));
 
         guardar.setText("GUARDAR");
         guardar.addActionListener(new java.awt.event.ActionListener() {
@@ -157,6 +179,8 @@ public class main extends javax.swing.JFrame {
                 guardarActionPerformed(evt);
             }
         });
+        getContentPane().add(guardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(186, 538, 107, -1));
+        getContentPane().add(carreraBarra, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 83, 457, 73));
 
         comenzar.setText("COMENZAR");
         comenzar.addActionListener(new java.awt.event.ActionListener() {
@@ -164,13 +188,7 @@ public class main extends javax.swing.JFrame {
                 comenzarActionPerformed(evt);
             }
         });
-
-        pausar.setText("PAUSAR");
-        pausar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pausarActionPerformed(evt);
-            }
-        });
+        getContentPane().add(comenzar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 37, -1, -1));
 
         tablaCorredores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -181,110 +199,18 @@ public class main extends javax.swing.JFrame {
                 "Identificador", "Corredor", "Distancia"
             }
         ));
+        tablaCorredores.setUpdateSelectionOnSort(false);
         jScrollPane1.setViewportView(tablaCorredores);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(carrosLista, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(listaTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(guardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(idField)
-                            .addComponent(corredorField)
-                            .addComponent(color, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(reinicioBoton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(botonPista, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(61, 61, 61))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(nombrePistaLabel)
-                                    .addComponent(largoPistaLabel))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(nombrePistaField, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(largoPistaField, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(carreraBarra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(comenzar)
-                            .addGap(18, 18, 18)
-                            .addComponent(pausar)
-                            .addGap(30, 30, 30)
-                            .addComponent(pistaLabel)
-                            .addGap(18, 18, 18)
-                            .addComponent(pistaLabelEdit)
-                            .addGap(43, 43, 43)
-                            .addComponent(largoLabel)
-                            .addGap(18, 18, 18)
-                            .addComponent(largoLabelEdit))))
-                .addGap(53, 53, 53))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comenzar)
-                    .addComponent(pausar)
-                    .addComponent(pistaLabel)
-                    .addComponent(largoLabel)
-                    .addComponent(pistaLabelEdit)
-                    .addComponent(largoLabelEdit))
-                .addGap(24, 24, 24)
-                .addComponent(carreraBarra, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(agregar)
-                            .addComponent(carrosLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(23, 23, 23)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(corredorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(25, 25, 25)
-                        .addComponent(listaTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(nombrePistaLabel)
-                            .addComponent(nombrePistaField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(largoPistaLabel)
-                            .addComponent(largoPistaField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(59, 59, 59)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(botonPista)
-                            .addComponent(color))
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(reinicioBoton)
-                            .addComponent(guardar))))
-                .addGap(29, 29, 29))
-        );
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 162, 457, 174));
+
+        estado.setText("PAUSA");
+        estado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                estadoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(estado, new org.netbeans.lib.awtextra.AbsoluteConstraints(163, 37, 94, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -295,7 +221,7 @@ public class main extends javax.swing.JFrame {
         largoLabelEdit.setText(largoPistaField.getText());
         largoPistaField.setText("");
         
-        ab = new barra(carreraBarra,Integer.parseInt(largoLabelEdit.getText()));
+        
         
     }//GEN-LAST:event_botonPistaActionPerformed
 
@@ -305,7 +231,7 @@ public class main extends javax.swing.JFrame {
         largoLabelEdit.setText("");
         largoPistaField.setText("");
         
-        ab = new barra(carreraBarra,0);
+        
     }//GEN-LAST:event_reinicioBotonActionPerformed
 
     private void listaTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listaTipoActionPerformed
@@ -326,38 +252,32 @@ public class main extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_largoPistaFieldActionPerformed
 
-    private void pausarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pausarActionPerformed
-
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
         int tempId = Integer.parseInt(idField.getText());
         
-        for (carro object : carrosTemp) {
-            if (object.getId()==tempId) {
-                JOptionPane.showMessageDialog(this, "Este ID de corredor ya existe!");
-                idField.setText("");
-                break;
-            } else if (object.getId()!=tempId){
-                idField.setText("");
+        
+        if (carrosTemp.contains(tempId)) {
+            JOptionPane.showMessageDialog(this, "Este ID de corredor ya existe!");
+            idField.setText("");
+        } else {
+            idField.setText("");
 
-                String tempCorredor = corredorField.getText();
-                corredorField.setText("");
+            String tempCorredor = corredorField.getText();
+            corredorField.setText("");
 
-                Color tempColor = color.getBackground();
+            Color tempColor = color.getBackground();
 
-                String tempTipo = listaTipo.getActionCommand();
+            String tempTipo = listaTipo.getActionCommand();
 
-                carro temp = new carro(tempId, tempCorredor, tempTipo, tempColor);
-                carrosTemp.add(temp);
+            carro temp = new carro(tempId, tempCorredor, tempTipo, tempColor);
+            carrosTemp.add(temp);
 
-                ap.cargarArchivo();
-                ap.setCarro(temp);
-                carrosLista.addItem(tempCorredor);
-                ap.escribirArchivo();
-                JOptionPane.showMessageDialog(this,
-                        "Corredor Guardado Exitosamente");
-            }
+            ap.cargarArchivo();
+            ap.setCarro(temp);
+            carrosLista.addItem(tempCorredor);
+            ap.escribirArchivo();
+            JOptionPane.showMessageDialog(this,
+                    "Corredor Guardado Exitosamente");
         }
         
     }//GEN-LAST:event_guardarActionPerformed
@@ -369,7 +289,7 @@ public class main extends javax.swing.JFrame {
     private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
         String nombreTemp = carrosTemp.get(carrosLista.getSelectedIndex()-1).getNombre();
         int idTemp = carrosTemp.get(carrosLista.getSelectedIndex()-1).getId();
-        
+        carrosCarrera.add(carrosTemp.get(carrosLista.getSelectedIndex()-1));
         DefaultTableModel model = (DefaultTableModel) tablaCorredores.getModel();
         model.addRow(new Object[]{idTemp, nombreTemp, 0});
 
@@ -378,6 +298,19 @@ public class main extends javax.swing.JFrame {
     private void comenzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comenzarActionPerformed
         ab.start();
     }//GEN-LAST:event_comenzarActionPerformed
+
+    private void estadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoActionPerformed
+        AbstractButton abstractButton = (AbstractButton) evt.getSource();
+        boolean selected = abstractButton.getModel().isSelected();
+
+        if(selected){
+            estado.setText("REANUDAR");
+            ab.setAvanzar(false);
+        } else {
+            estado.setText("PAUSE");
+            ab.setAvanzar(true);
+        }
+    }//GEN-LAST:event_estadoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -422,6 +355,7 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JToggleButton color;
     private javax.swing.JButton comenzar;
     private javax.swing.JTextField corredorField;
+    private javax.swing.JToggleButton estado;
     private javax.swing.JButton guardar;
     private javax.swing.JTextField idField;
     private javax.swing.JColorChooser jColorChooser1;
@@ -436,7 +370,6 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> listaTipo;
     private javax.swing.JTextField nombrePistaField;
     private javax.swing.JLabel nombrePistaLabel;
-    private javax.swing.JButton pausar;
     private javax.swing.JLabel pistaLabel;
     private javax.swing.JLabel pistaLabelEdit;
     private javax.swing.JButton reinicioBoton;
